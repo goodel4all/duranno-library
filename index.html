@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>신앙적 책 읽기 | 온라인 서재</title>
   
-  <!-- Open Graph: 카카오톡/SNS 공유 카드 최적화 -->
+  <!-- Open Graph: 카카오톡/문자 공유 카드 최적화 -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="신앙적 책 읽기 서재">
-  <meta property="og:description" content="언제든 편안하게 읽고 듣는 100여 편의 신앙 독서 나눔">
-  <meta property="og:image" content="https://raw.githubusercontent.com/username/repo-name/main/assets/og-cover.jpg">
+  <meta property="og:description" content="언제든 편안하게 읽고 듣는 71편의 신앙 독서 나눔">
+  <meta property="og:image" content="https://goodel4all.github.io/duranno-library/og-cover.jpg">
   <meta name="theme-color" content="#2e4d41">
 
   <!-- Font: Pretendard -->
@@ -37,7 +37,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 상단 헤더 & 검색 배너 */
+    /* 상단 배너 */
     header {
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: #ffffff;
@@ -60,7 +60,7 @@
       margin-bottom: 1.75rem;
     }
 
-    /* 실시간 검색창 */
+    /* 검색창 */
     .search-box {
       position: relative;
       width: 100%;
@@ -75,15 +75,11 @@
       background: #ffffff;
       color: var(--text-main);
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-      transition: box-shadow 0.2s ease;
-    }
-    .search-box input:focus {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
 
-    /* 본문 도서 그리드 */
+    /* 메인 그리드 */
     main {
-      max-width: 1120px;
+      max-width: 1140px;
       margin: 2rem auto;
       padding: 0 1rem;
     }
@@ -95,11 +91,11 @@
     }
     .book-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.25rem;
     }
 
-    /* 개별 책 카드 */
+    /* 카드 */
     .book-card {
       background: var(--surface);
       border-radius: 12px;
@@ -116,50 +112,35 @@
       transform: translateY(-4px);
       box-shadow: var(--shadow-md);
     }
-    .cover-wrap {
-      width: 100%;
-      height: 180px;
-      background: #e2e8f0;
-      overflow: hidden;
+    .cover-banner {
+      height: 90px;
+      background: linear-gradient(135deg, #e9f2ee, #d5e5dd);
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    .cover-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .cover-fallback {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #64748b;
       padding: 1rem;
       text-align: center;
     }
+    .cover-banner span {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.05em;
+    }
     .card-body {
-      padding: 1.2rem;
+      padding: 1.25rem;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
     }
     .book-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      line-height: 1.4;
+      margin-bottom: 0.75rem;
       color: var(--text-main);
       display: -webkit-box;
       -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .book-excerpt {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      flex-grow: 1;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -171,18 +152,19 @@
       font-weight: 600;
       color: var(--primary);
       background-color: #e9f2ee;
-      padding: 0.25rem 0.55rem;
+      padding: 0.25rem 0.5rem;
       border-radius: 6px;
       align-self: flex-start;
+      margin-top: auto;
     }
 
-    /* 검색 결과 없음 */
     .empty-state {
       display: none;
       text-align: center;
       padding: 4rem 1rem;
       color: var(--text-muted);
       grid-column: 1 / -1;
+      font-size: 1.05rem;
     }
   </style>
 </head>
@@ -193,83 +175,146 @@
       <h1>신앙적 책 읽기</h1>
       <p>말씀과 신앙 문헌을 언제 어디서나 읽고 듣는 온라인 서재</p>
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="책 제목, 저자, 키워드를 입력하세요...">
+        <input type="text" id="searchInput" placeholder="책 제목이나 키워드를 검색해 보세요...">
       </div>
     </div>
   </header>
 
   <main>
-    <div class="status-bar" id="statusBar">등록된 책 총 3권</div>
-    <div class="book-grid" id="bookGrid">
-
-      <!-- 책 카드 템플릿: 데이터가 늘어나면 아래 블록을 복제/추가합니다 -->
-      <a href="books/book_001.html" class="book-card" data-title="순전한 기독교" data-keyword="C.S.루이스 변증 신앙">
-        <div class="cover-wrap">
-          <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80" alt="표지 이미지">
-        </div>
-        <div class="card-body">
-          <h2 class="book-title">순전한 기독교</h2>
-          <p class="book-excerpt">모든 그리스도인이 공통으로 믿어 온 핵심 진리와 이성적 믿음에 관한 변증적 고찰.</p>
-          <span class="badge-audio">🎧 오디오 포함</span>
-        </div>
-      </a>
-
-      <a href="books/book_002.html" class="book-card" data-title="그리스도를 본받아" data-keyword="토마스 아 켐피스 영성 기도 묵상">
-        <div class="cover-wrap">
-          <div class="cover-fallback">그리스도를 본받아</div>
-        </div>
-        <div class="card-body">
-          <h2 class="book-title">그리스도를 본받아</h2>
-          <p class="book-excerpt">세상 헛된 영광을 버리고 내면의 참된 평화와 그리스도의 발자취를 따르는 묵상집.</p>
-          <span class="badge-audio">🎧 오디오 포함</span>
-        </div>
-      </a>
-
-      <a href="books/book_003.html" class="book-card" data-title="천로역정" data-keyword="존 번연 우화 구원 순례">
-        <div class="cover-wrap">
-          <div class="cover-fallback">천로역정</div>
-        </div>
-        <div class="card-body">
-          <h2 class="book-title">천로역정</h2>
-          <p class="book-excerpt">멸망의 도시를 떠나 하늘 성을 향해 나아가는 순례자의 고난과 은혜의 여정.</p>
-          <span class="badge-audio">🎧 오디오 포함</span>
-        </div>
-      </a>
-
-      <div class="empty-state" id="emptyState">
-        검색 결과와 일치하는 도서가 없습니다.
-      </div>
-    </div>
+    <div class="status-bar" id="statusBar">등록된 책 총 71권</div>
+    <div class="book-grid" id="bookGrid"></div>
+    <div class="empty-state" id="emptyState">검색 결과와 일치하는 도서가 없습니다.</div>
   </main>
 
   <script>
+    const rawFiles = [
+      "[도서인사이트]_성령충만 실패한 이들을 위한 은혜.html",
+      "[신앙적 책 읽기]_1 그리스도인임을 확신하는 방법.html",
+      "[신앙적 책 읽기]_1세기 교회를 형성한 낯선 얼굴들.html",
+      "[신앙적 책 읽기]_God the Father God the Son (성부 하나님과 성자 하나님).html",
+      "[신앙적 책 읽기]_Mission Perspectives (미션 퍼스펙티브).html",
+      "[신앙적 책 읽기]_THE MEANING OF PERSONS.html",
+      "[신앙적 책 읽기]_The Ology_ 세상에서 배울 수 없는 하나님을 아는 지식.html",
+      "[신앙적 책 읽기]_가장 어두운 순간, 가장 가까이에.html",
+      "[신앙적 책 읽기]_가족.html",
+      "[신앙적 책 읽기]_거인을 읽다.html",
+      "[신앙적 책 읽기]_나는 사랑하는 사람을 잃었습니다.html",
+      "[신앙적 책 읽기]_나를 따르라.html",
+      "[신앙적 책 읽기]_나무와 나.html",
+      "[신앙적 책 읽기]_나에게 길은 있었네.html",
+      "[신앙적 책 읽기]_나의 몫.html",
+      "[신앙적 책 읽기]_내 마음 그리스도의 집.html",
+      "[신앙적 책 읽기]_내 마음의 열매 가꾸기.html",
+      "[신앙적 책 읽기]_너를 아끼며 살아라.html",
+      "[신앙적 책 읽기]_뇌는 어떻게 변화를 거부하는가.html",
+      "[신앙적 책 읽기]_니체의 초월자 (Ubermensch).html",
+      "[신앙적 책 읽기]_다산의 문장들.html",
+      "[신앙적 책 읽기]_두 노인.html",
+      "[신앙적 책 읽기]_말씀암송1000.html",
+      "[신앙적 책 읽기]_무릎으로 사는 그리스도인.html",
+      "[신앙적 책 읽기]_산골짜기에서 온 편지 1.html",
+      "[신앙적 책 읽기]_성경적 비판 이론 (Biblical Critical Theory).html",
+      "[신앙적 책 읽기]_성령 하나님과 놀라운 구원 (God the Holy Spirit).html",
+      "[신앙적 책 읽기]_성령이 임하시면 권능을 받고.html",
+      "[신앙적 책 읽기]_속죄.html",
+      "[신앙적 책 읽기]_시오카리 고개.html",
+      "[신앙적 책 읽기]_아버지의 해방일지.html",
+      "[신앙적 책 읽기]_악인 씨의 삶과 죽음 (THE LIFE AND DEATH OF MR. BADMAN).html",
+      "[신앙적 책 읽기]_알라를 찾다가 예수를 만나다.html",
+      "[신앙적 책 읽기]_야간비행.html",
+      "[신앙적 책 읽기]_에릭 리들.html",
+      "[신앙적 책 읽기]_열방을 변화시키는 하나님의 책.html",
+      "[신앙적 책 읽기]_예수님이라면 어떻게 하실까_.html",
+      "[신앙적 책 읽기]_예언자.html",
+      "[신앙적 책 읽기]_오늘도 미술관에 다녀왔습니다.html",
+      "[신앙적 책 읽기]_요한계시록으로 배우는 귀납적 성경연구.html",
+      "[신앙적 책 읽기]_우리는 여전히 삶을 사랑하는가.html",
+      "[신앙적 책 읽기]_자아의 구도.html",
+      "[신앙적 책 읽기]_제자도.html",
+      "[신앙적 책 읽기]_존재와 시간.html",
+      "[신앙적 책 읽기]_좁은 문.html",
+      "[신앙적 책 읽기]_중국의 예수가족 공동체 교회 이야기.html",
+      "[신앙적 책 읽기]_지구의 편지.html",
+      "[신앙적 책 읽기]_침묵.html",
+      "[신앙적 책 읽기]_탕자의 귀항.html",
+      "[신앙적 책 읽기]_톰 아저씨의 오두막집.html",
+      "[신앙적 책 읽기]_팡세.html",
+      "[신앙적 책 읽기]_평신도를 깨운다.html",
+      "[신앙적 책 읽기]_평양 대부흥 이야기.html",
+      "[신앙적 책 읽기]_프랑스 수도원 순례.html",
+      "[신앙적 책 읽기]_하나님, 정말 당신이십니까_.html",
+      "[신앙적 책 읽기]_하나님을 아는 지식.html",
+      "[신앙적 책 읽기]_하나님의 천지창조의 목적.html",
+      "[신앙적 책 읽기]_하늘과 바람과 별과 詩.html",
+      "[신앙적 책 읽기]_하늘에 속한 사람.html",
+      "[신앙적 책 읽기]_한국교회 처음 이야기.html",
+      "신앙적 책읽기 '1세기 교회를 형성한 낯선 얼굴들'.html",
+      "신앙적 책읽기 '교회, 또 하나의 가족'.html",
+      "신앙적 책읽기 '신학, 대화로 만나다'.html",
+      "신앙적 책읽기 '심리학으로 만나는 정신건강'.html",
+      "신앙적 책읽기 '우리 본성의 선한 천사'.html",
+      "신앙적 책읽기 '유진 피터슨'.html",
+      "신앙적 책읽기 '찬양의 여왕 패니 크로스비'.html",
+      "신앙적 책읽기 '천개의공감'.html",
+      "신앙적 책읽기 '청년 칼뱅'.html",
+      "신앙적 책읽기 '평신도의 재발견'.html",
+      "신앙적 책읽기 '헤르만 헤세 시집'.html"
+    ];
+
+    function cleanTitle(filename) {
+      return filename
+        .replace(/\.html$/, '')
+        .replace(/^\[도서인사이트\]_/, '')
+        .replace(/^\[신앙적 책 읽기\]_/, '')
+        .replace(/^신앙적 책읽기\s*['"]?/, '')
+        .replace(/['"]$/, '');
+    }
+
+    const grid = document.getElementById('bookGrid');
     const searchInput = document.getElementById('searchInput');
-    const cards = document.querySelectorAll('.book-card');
     const emptyState = document.getElementById('emptyState');
     const statusBar = document.getElementById('statusBar');
 
-    statusBar.textContent = `등록된 책 총 ${cards.length}권`;
+    rawFiles.forEach(file => {
+      const displayTitle = cleanTitle(file);
+      const card = document.createElement('a');
+      card.className = 'book-card';
+      card.href = 'books/' + encodeURI(file);
+      card.dataset.title = displayTitle.toLowerCase();
+      card.dataset.raw = file.toLowerCase();
+
+      card.innerHTML = `
+        <div class="cover-banner">
+          <span>신앙적 책 읽기</span>
+        </div>
+        <div class="card-body">
+          <h2 class="book-title">${displayTitle}</h2>
+          <span class="badge-audio">🎧 오디오 본문 포함</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
 
     searchInput.addEventListener('input', (e) => {
-      const term = e.target.value.toLowerCase().trim();
-      let matchCount = 0;
+      const query = e.target.value.toLowerCase().trim();
+      const allCards = document.querySelectorAll('.book-card');
+      let visibleCount = 0;
 
-      cards.forEach(card => {
-        const title = card.getAttribute('data-title').toLowerCase();
-        const keywords = card.getAttribute('data-keyword').toLowerCase();
-        const excerpt = card.querySelector('.book-excerpt').textContent.toLowerCase();
-
-        if (title.includes(term) || keywords.includes(term) || excerpt.includes(term)) {
+      allCards.forEach(card => {
+        const title = card.dataset.title;
+        const raw = card.dataset.raw;
+        if (title.includes(query) || raw.includes(query)) {
           card.style.display = 'flex';
-          matchCount++;
+          visibleCount++;
         } else {
           card.style.display = 'none';
         }
       });
 
-      emptyState.style.display = matchCount === 0 ? 'block' : 'none';
-      statusBar.textContent = term ? `검색 결과 ${matchCount}권` : `등록된 책 총 ${cards.length}권`;
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      statusBar.textContent = query ? `검색 결과 ${visibleCount}권` : `등록된 책 총 ${allCards.length}권`;
     });
   </script>
 </body>
 </html>
+
